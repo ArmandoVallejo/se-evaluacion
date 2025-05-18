@@ -1,43 +1,907 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checklist por Unidades</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-4">
-    <h1 class="text-center mb-4">Checklist por Unidades</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evaluación Multipasos</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .step {
+        display: none;
+      }
+      .step.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container my-5">
+      <h1 class="mb-4">Evaluacion de POO</h1>
 
-    {% if mensaje %}
-      <div class="alert alert-success text-center" role="alert">
-        {{ mensaje }}
+      <!-- Barra de progreso -->
+      <div class="progress mb-4" style="height: 25px">
+        <div
+          id="progressBar"
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          style="width: 25%"
+          aria-valuenow="25"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          Paso 1 de 2
+        </div>
       </div>
-    {% endif %}
 
-    <form method="POST">
-      {% for unidad, items in unidades.items() %}
-        <div class="card mb-3">
-          <div class="card-header bg-primary text-white">
-            {{ unidad }}
-          </div>
-          <div class="card-body">
-            {% for item in items %}
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="checks" value="{{ unidad }} - {{ item }}" id="{{ unidad }}-{{ loop.index }}">
-                <label class="form-check-label" for="{{ unidad }}-{{ loop.index }}">
-                  {{ item }}
-                </label>
-              </div>
-            {% endfor %}
+      <form id="evaluationForm" method="POST" action="/evaluar" novalidate>
+        <!-- Paso 1 Practica de Programacion -->
+        <div class="step active" id="step1">
+          <h2>Evaluación: Práctica de Programación</h2>
+          <h4>Portada</h4>
+          <label>Presenta una portada con:</label>
+          <ol>
+            <li>Logo del TecNM y del ITA en la parte superior.</li>
+            <li>Nombre del instituto.</li>
+            <li>Nombre de la carrera.</li>
+            <li>Nombre de la materia y hora</li>
+            <li>
+              Número de unidad, descripción y redacción de la evidencia de
+              aprendizaje
+            </li>
+            <li>Nombre y número de control</li>
+            <li>Fecha</li>
+            <li>Sin errores ortográficos</li>
+          </ol>
+          <select name="portada_practica" class="form-select" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="5">Cumple completamente (5 pts)</option>
+            <option value="4.5">
+              Cumple 6 elementos y sin errores (4.5 pts)
+            </option>
+            <option value="4">Cumple 5 elementos y sin errores (4 pts)</option>
+            <option value="3.5">
+              Cumple 4 elementos y sin errores (3.5 pts)
+            </option>
+            <option value="0">
+              Cumple menos de 4 elementos o no cumple o tiene errores (0 pts)
+            </option>
+          </select>
+
+          <h4>Desarrollo Problema 1</h4>
+          <label>Presenta la resolución con los siguientes rubros:</label>
+          <ul>
+            <li>Descripción del problema</li>
+            <li>Código de las superclases</li>
+            <li>Código de las subclases</li>
+            <li>Código de la clase principal</li>
+            <li>Capturas de ejecución al 100%</li>
+          </ul>
+          <select name="problema_1_practica" class="form-select" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="35">Cumple completamente (35 pts)</option>
+            <option value="31.5">Ejecución al 90% (31.5 pts)</option>
+            <option value="28">Ejecución al 80% (28 pts)</option>
+            <option value="24.5">Ejecución al 70% (24.5 pts)</option>
+            <option value="0">
+              Ejecución menor a 70% o no presenta la solución (0 pts)
+            </option>
+          </select>
+
+          <h4>Desarrollo Problema 2</h4>
+          <label>Presenta la resolución con los siguientes rubros:</label>
+          <ul>
+            <li>Descripción del problema</li>
+            <li>Código con operaciones trigonométricas y matemáticas</li>
+            <li>Funcionamiento de las 8 funciones</li>
+          </ul>
+          <select name="problema_2_practica" class="form-select" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="35">Cumple completamente (35 pts)</option>
+            <option value="31.5">Ejecución 7 funciones (31.5 pts)</option>
+            <option value="28">Ejecución 6 funciones (28 pts)</option>
+            <option value="24.5">Ejecución 5 funciones (24.5 pts)</option>
+            <option value="0">
+              Menos de 5 funciones o no presenta solución (0 pts)
+            </option>
+          </select>
+
+          <h4>Conclusiones</h4>
+          <label
+            >Presenta una opinión coherente con el trabajo, sin errores
+            ortográficos, justificado y más de media cuartilla</label
+          >
+          <select name="conclusiones_practica" class="form-select" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="20">Cumple completamente (20 pts)</option>
+            <option value="18">Conclusión en media cuartilla (18 pts)</option>
+            <option value="16">
+              Conclusión en menos de media cuartilla (16 pts)
+            </option>
+            <option value="14">
+              Conclusión en menos de media cuartilla con máximo 2 errores (14
+              pts)
+            </option>
+            <option value="0">
+              No es coherente, no cumple o no aporta personalmente (0 pts)
+            </option>
+          </select>
+
+          <h4>Indicador de Alcance E</h4>
+          <label
+            >Entrega resolucion de problemas adicionales en la practica de
+            programacion</label
+          >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="5"
+            id="indicador_e_si"
+            name="indicador_e"
+            required
+          />
+          <label class="form-check-label" for="indicador_e">
+            Sí cumple (5 pts)
+          </label>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="0"
+            id="indicador_e_no"
+            name="indicador_e"
+            required
+          />
+          <label class="form-check-label" for="indicador_e_no">
+            No cumple (0 pts)
+          </label>
+
+          <h4>Indicador de Alcance F</h4>
+          <label>Entrega trabajo en tiempo y forma</label>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="5"
+            id="indicador_f_si"
+            name="indicador_f"
+            required
+          />
+          <label class="form-check-label" for="indicador_f">
+            Sí cumple (5 pts)
+          </label>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="0"
+            id="indicador_f_no"
+            name="indicador_f"
+            required
+          />
+          <label class="form-check-label" for="indicador_f_no">
+            No cumple (0 pts)
+          </label>
+
+          <div class="mt-4 d-flex justify-content-end">
+            <button type="button" class="btn btn-success next-btn">
+              Siguiente
+            </button>
           </div>
         </div>
-      {% endfor %}
-      <div class="text-center">
-        <button type="submit" class="btn btn-success">Enviar respuestas</button>
-      </div>
-    </form>
-  </div>
-</body>
+
+        <!-- Paso 2 Proyecto-->
+        <div class="step" id="step2">
+          <h2>Evaluación: Proyecto</h2>
+          <!-- Criterio 1 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              1. Realizan la presentación ante el grupo de cada uno de sus
+              integrantes (Nombre completo). (AG)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_1_proyecto"
+                id="criterio1_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="criterio1_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_1_proyecto"
+                id="criterio1_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio1_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 2 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              2. Indican ante el grupo la descripción del proyecto a resolver.
+              (AG)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_2_proyecto"
+                id="criterio2_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="criterio2_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_2_proyecto"
+                id="criterio2_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio2_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 3 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              3. Demuestra, describe y explica el funcionamiento del proyecto
+              (interface, clases, ejecución). (CI)
+            </label>
+            <div class="form-text">Valor: 30 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_3_proyecto"
+                id="criterio3_si"
+                value="30"
+                required
+              />
+              <label class="form-check-label" for="criterio3_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_3_proyecto"
+                id="criterio3_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio3_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 4 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              4. Expresa y maneja el sistema del proyecto de forma correcta.
+              (PI)
+            </label>
+            <div class="form-text">Valor: 15 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_4_proyecto"
+                id="criterio4_si"
+                value="15"
+                required
+              />
+              <label class="form-check-label" for="criterio4_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_4_proyecto"
+                id="criterio4_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio4_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 5 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              5. Aplican y resuelven correctamente la resolución del proyecto.
+              (PG)
+            </label>
+            <div class="form-text">Valor: 15 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_5_proyecto"
+                id="criterio5_si"
+                value="15"
+                required
+              />
+              <label class="form-check-label" for="criterio5_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_5_proyecto"
+                id="criterio5_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio5_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 6 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              6. Interactúa con el grupo manteniendo contacto visual durante la
+              exposición. (AI)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_6_proyecto"
+                id="criterio6_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="criterio6_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_6_proyecto"
+                id="criterio6_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio6_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 7 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              7. Emplea un tono de voz adecuado durante la exposición y sin
+              utilizar muletillas. (AI)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_7_proyecto"
+                id="criterio7_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="criterio7_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_7_proyecto"
+                id="criterio7_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio7_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 8 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              8. Organizan su presentación y mantienen la atención del grupo
+              durante la exposición. (AG)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_8_proyecto"
+                id="criterio8_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="criterio8_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_8_proyecto"
+                id="criterio8_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio8_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 9 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              9. Responde a las preguntas de forma correcta. (CPAI)
+            </label>
+            <div class="form-text">Valor: 10 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_9_proyecto"
+                id="criterio9_si"
+                value="10"
+                required
+              />
+              <label class="form-check-label" for="criterio9_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_9_proyecto"
+                id="criterio9_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio9_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 10 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              10. Cumplen con el tiempo planeado para la sesión de 16 a 20
+              minutos. (AG)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_10_proyecto"
+                id="criterio10_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="criterio10_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="criterio_10_proyecto"
+                id="criterio10_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio10_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 11 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              11. Diseñar opciones adicionales al proyecto: menú con opciones
+              Instanciar y Desplegar. (A)
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_a"
+                id="indicadora_si"
+                value="1"
+                required
+              />
+              <label class="form-check-label" for="criterio11_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_a"
+                id="indicadora_no"
+                value="0"
+              />
+              <label class="form-check-label" for="criterio11_no">No</label>
+            </div>
+          </div>
+
+          <div class="mt-4 d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary prev-btn">
+              Anterior
+            </button>
+            <button type="button" class="btn btn-success next-btn">
+              Siguiente
+            </button>
+          </div>
+        </div>
+
+        <!-- Paso 3 Entrega Proyecto-->
+        <div class="step" id="step3">
+          <h2>Evaluación: Trabajo del proyecto</h2>
+          <!-- Criterio 1 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              1. Portada con los siguientes rubros:
+              <ul>
+                <li>Logo del TECNM y del ITA</li>
+                <li>Nombre del instituto</li>
+                <li>Nombre de la carrera</li>
+                <li>Nombre de la materia y hora</li>
+                <li>Número de unidad y descripción del proyecto</li>
+                <li>Nombre y número de control</li>
+                <li>Fecha</li>
+              </ul>
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio1"
+                id="entrega_proyecto_criterio1_si"
+                value="5"
+                required
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio1_si"
+                >Sí</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio1"
+                id="entrega_proyecto_criterio1_no"
+                value="0"
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio1_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <!-- Criterio 2 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              2. Contiene la resolucion del proyecto con:
+              <ul>
+                <li>Interface Ingreso</li>
+                <li>Clases: Persona, Directiva, Empleado, Obrero</li>
+                <li>Clase principal</li>
+                <li>Ejecucion</li>
+                <li>Ejecucion del programa con imagenes al 100%</li>
+              </ul>
+            </label>
+            <div class="form-text">Valor: 60 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio2"
+                id="entrega_proyecto_criterio2_si"
+                value="60"
+                required
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio2_si"
+                >Sí</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio2"
+                id="entrega_proyecto_criterio2_no"
+                value="0"
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio2_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <!-- Criterio 3 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              3. La conclusion tiene una opinion coherente con el trabajo por
+              cad integrante del equipo
+            </label>
+            <div class="form-text">Valor: 15 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio3"
+                id="entrega_proyecto_criterio3_si"
+                value="15"
+                required
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio3_si"
+                >Sí</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio3"
+                id="entrega_proyecto_criterio3_no"
+                value="0"
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio3_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <!-- Criterio 4 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              4. El trabajo tiene texto justificado, maneja titulos y subtitulos
+            </label>
+            <div class="form-text">Valor: 10 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio4"
+                id="entrega_proyecto_criterio4_si"
+                value="10"
+                required
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio4_si"
+                >Sí</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio4"
+                id="entrega_proyecto_criterio4_no"
+                value="0"
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio4_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <!-- Criterio 5 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              5. El trabajo esta libre de errores otrograficos
+            </label>
+            <div class="form-text">Valor: 10 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio5"
+                id="entrega_proyecto_criterio5_si"
+                value="10"
+                required
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio5_si"
+                >Sí</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="entrega_proyecto_criterio5"
+                id="entrega_proyecto_criterio5_no"
+                value="0"
+              />
+              <label
+                class="form-check-label"
+                for="entrega_proyecto_criterio5_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <div class="mt-4 d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary prev-btn">
+              Anterior
+            </button>
+            <button type="button" class="btn btn-success next-btn">
+              Siguiente
+            </button>
+          </div>
+        </div>
+
+        <!-- Paso 4 Indicadores de Alcance-->
+        <div class="step" id="step4">
+          <h2>Evaluación: Indicadores de Alcance Extras</h2>
+          <!-- Criterio 1 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              1. Indicador de Alcance B: Participacion en Clase
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_b"
+                id="indicador_b_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="indicador_b_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_b"
+                id="indicador_b_no"
+                value="0"
+              />
+              <label class="form-check-label" for="indicador_b_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 2 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              2. Indicador de Alcance C: Explica problemas propuestos
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_c"
+                id="indicador_c_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="indicador_c_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_c"
+                id="indicador_c_no"
+                value="0"
+              />
+              <label class="form-check-label" for="indicador_c_no">No</label>
+            </div>
+          </div>
+
+          <!-- Criterio 3 -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">
+              3. Indicador de Alcance D: Constancia de curso en linea
+            </label>
+            <div class="form-text">Valor: 5 puntos</div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_d"
+                id="indicador_d_si"
+                value="5"
+                required
+              />
+              <label class="form-check-label" for="indicador_d_si">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="indicador_d"
+                id="indicador_d_no"
+                value="0"
+              />
+              <label class="form-check-label" for="indicador_d_no">No</label>
+            </div>
+          </div>
+
+          <div class="mt-4 d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary prev-btn">
+              Anterior
+            </button>
+            <button type="submit" class="btn btn-success next-btn">
+              Finalizar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      (() => {
+        const steps = document.querySelectorAll(".step");
+        const progressBar = document.getElementById("progressBar");
+        const totalSteps = steps.length;
+        let currentStep = 0;
+
+        const showStep = (index) => {
+          steps.forEach((step, i) => {
+            step.classList.toggle("active", i === index);
+          });
+          progressBar.style.width = ((index + 1) / totalSteps) * 100 + "%";
+          progressBar.textContent = `Paso ${index + 1} de ${totalSteps}`;
+          progressBar.setAttribute(
+            "aria-valuenow",
+            ((index + 1) / totalSteps) * 100
+          );
+        };
+
+        const validateStep = (index) => {
+          const inputs = steps[index].querySelectorAll(
+            "select[required], input[required]"
+          );
+          for (const input of inputs) {
+            if (!input.checkValidity()) {
+              input.reportValidity();
+              return false;
+            }
+          }
+          return true;
+        };
+
+        document.querySelectorAll(".next-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (validateStep(currentStep)) {
+              if (currentStep < totalSteps - 1) {
+                currentStep++;
+                showStep(currentStep);
+              }
+            }
+          });
+        });
+
+        document.querySelectorAll(".prev-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (currentStep > 0) {
+              currentStep--;
+              showStep(currentStep);
+            }
+          });
+        });
+
+        showStep(currentStep);
+      })();
+    </script>
+  </body>
 </html>
